@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RetinaCare AI | Analysis Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            +
+        </div>
+
+        <div class="brand-text">
+            <h2>RetinaCare</h2>
+            <span>AI SCREENING</span>
+        </div>
+
+    </div>
+
+    <nav class="nav-links">
+
+        <a href="/">Home</a>
+        <a href="/#about">About AI</a>
+        <a href="/#how-it-works">How It Works</a>
+
+    </nav>
+
+</header>
+
+
+
+    <!-- REPORT -->
+
+    <main class="report-page">
+
+        <div class="report-header">
+
+            <div>
+
+                <span class="report-label">
+                    AI-ASSISTED SCREENING
+                </span>
+
+                <h1>
+                    Retinal Analysis Report
+                </h1>
+
+                <p>
+                    AI-generated analysis of the uploaded
+                    retinal fundus image.
+                </p>
+
+            </div>
+
+            <div class="report-status">
+                ANALYSIS COMPLETE
+            </div>
+
+        </div>
+
+
+
+        <!-- IMAGE + ASSESSMENT -->
+
+        <section class="report-grid">
+
+
+            <!-- IMAGE -->
+
+            <div class="report-card image-card">
+
+                <div class="card-heading">
+
+                    <span>
+                        PATIENT IMAGE
+                    </span>
+
+                </div>
+
+                <div class="retinal-image-container">
+
+                    <img
+    src="{{ url_for('static', filename='uploads/' + image_path) }}"
+    alt="Uploaded retinal image"
+    class="retinal-result-image"
+>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ASSESSMENT -->
+
+            <div class="report-card assessment-card">
+
+                <div class="card-heading">
+
+                    <span>
+                        AI ASSESSMENT
+                    </span>
+
+                </div>
+
+
+                <div class="prediction-result">
+
+                    <p class="small-label">
+                        PREDICTED RETINAL CONDITION
+                    </p>
+
+                    <h2>
+                        {{ prediction }}
+                    </h2>
+
+                </div>
+
+
+                <div class="confidence-section">
+
+                    <div class="confidence-top">
+
+                        <span>
+                            Model Confidence
+                        </span>
+
+                        <strong>
+                            {{ confidence }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="confidence-bar">
+
+                        <div
+                            class="confidence-fill"
+                            style="width: {{ confidence }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RISK INFORMATION -->
+
+                <div class="risk-box">
+
+                    <div class="risk-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Cardiovascular Risk Assessment
+                        </strong>
+
+                        <p>
+                            The current model performs
+                            retinal-condition classification.
+                            It does not directly produce a
+                            validated high-risk or low-risk
+                            heart-attack prediction.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PROBABILITIES -->
+
+        <section class="report-card probabilities-card">
+
+            <div class="card-heading">
+
+                <span>
+                    CLASS PROBABILITIES
+                </span>
+
+            </div>
+
+
+            <div class="probability-list">
+
+                {% for item in probabilities %}
+
+                <div class="probability-row">
+
+                    <div class="probability-info">
+
+                        <span>
+                            {{ item.name }}
+                        </span>
+
+                        <strong>
+                            {{ item.value }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="probability-bar">
+
+                        <div
+                            class="probability-fill"
+                            style="width: {{ item.value }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- INTERPRETATION -->
+
+        <section class="report-card interpretation-card">
+
+            <div class="card-heading">
+
+                <span>
+                    RESULT INFORMATION
+                </span>
+
+            </div>
+
+
+            <h3>
+                What does this result mean?
+            </h3>
+
+
+            {% if prediction == "No_DR" %}
+
+            <p>
+                The model classified this image as
+                <strong>No DR</strong>, meaning it belongs
+                to the No_DR category recognized by the
+                trained model.
+            </p>
+
+            {% elif prediction == "Mild" %}
+
+            <p>
+                The model classified this image as
+                <strong>Mild</strong>. This represents the
+                Mild category in the classification system
+                used by the trained model.
+            </p>
+
+            {% elif prediction == "Moderate" %}
+
+            <p>
+                The model classified this image as
+                <strong>Moderate</strong>. This represents
+                the Moderate category in the classification
+                system used by the trained model.
+            </p>
+
+            {% elif prediction == "Severe" %}
+
+            <p>
+                The model classified this image as
+                <strong>Severe</strong>. This represents
+                the Severe category in the classification
+                system used by the trained model.
+            </p>
+
+            {% elif prediction == "Proliferate_DR" %}
+
+            <p>
+                The model classified this image as
+                <strong>Proliferative DR</strong>. This
+                represents the Proliferate_DR category in
+                the classification system used by the
+                trained model.
+            </p>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- DISCLAIMER -->
+
+        <section class="medical-disclaimer">
+
+            <div class="disclaimer-icon">
+                !
+            </div>
+
+            <div>
+
+                <strong>
+                    Important Medical Disclaimer
+                </strong>
+
+                <p>
+                    RetinaCare AI is an educational and
+                    research prototype. The displayed
+                    prediction is generated by a machine
+                    learning model and should not be
+                    considered a medical diagnosis.
+                    Please consult a qualified healthcare
+                    professional for clinical evaluation.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ACTION -->
+
+<div class="report-actions">
+
+    <a
+        href="{{ url_for('download_report',
+                         prediction=prediction,
+                         confidence=confidence,
+                         image=image_path) }}"
+        class="primary-button"
+    >
+        Download Report
+    </a>
+
+    <a
+        href="/"
+        class="secondary-button"
+    >
+        Analyze Another Image
+    </a>
+
+</div>
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                +
+            </div>
+
+            <div>
+                <h2>RetinaCare</h2>
+                <span>AI SCREENING</span>
+            </div>
+
+        </div>
+
+        <p>
+            AI-assisted retinal image classification
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
